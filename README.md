@@ -14,25 +14,23 @@ per-host basis while others will be role based.
 
 ### Apache variables
 
-```
-apache_packages:
-  - apache2
-  - apache2-doc
-  - apache2-utils
-  - apache2-mpm-itk
-  - libapache2-mod-php5
+    apache_packages:
+      - apache2
+      - apache2-doc
+      - apache2-utils
+      - apache2-mpm-itk
+      - libapache2-mod-php5
 
-apache_modules:
-  - alias.conf
-  - alias.load
-  - auth_basic.load
-  - authn_file.load
-  - ...
+    apache_modules:
+      - alias.conf
+      - alias.load
+      - auth_basic.load
+      - authn_file.load
+      - ...
 
-apache_host: "127.0.0.1"
-apache_port: "80"
-apache_ssl_port: "443"
-```
+    apache_host: "127.0.0.1"
+    apache_port: "80"
+    apache_ssl_port: "443"
 
 #### apache_packages
 
@@ -64,26 +62,24 @@ config file as well as for the VirtualHost lines in the vhost config files.
 
 ### PHP variables
 
-```
-php_packages:
-  - php5-common
-  - php5-cli
-  - php5-suhosin
-  - php5-apc
-  - php-pear
-  - php5-gd
-  - php5-memcache
-  - php5-mcrypt
-  - php5-gmp
-  - php5-mysql
-  - php5-curl
+    php_packages:
+      - php5-common
+      - php5-cli
+      - php5-suhosin
+      - php5-apc
+      - php-pear
+      - php5-gd
+      - php5-memcache
+      - php5-mcrypt
+      - php5-gmp
+      - php5-mysql
+      - php5-curl
 
-post_max_size: "10M"
-upload_max_filesize: "10M"
-php_timezone: "Australia/Brisbane"
-memory_limit: "32M"
-html_errors: "Off"
-```
+    post_max_size: "10M"
+    upload_max_filesize: "10M"
+    php_timezone: "Australia/Brisbane"
+    memory_limit: "32M"
+    html_errors: "Off"
 
 #### php_packages
 
@@ -96,43 +92,41 @@ Settings used in the php.ini file. These will likely be set per-host.
 
 ### Vhost settings
 
-```
-deleted_vhost_sites:
-  - {
-      host: 'del.example.com',
-      user: 'delexample',
-      group: 'delexample',
-      admin_email: 'admin@del.example.com',
-      disabled: True
-    }
+    deleted_vhost_sites:
+      - {
+          host: 'del.example.com',
+          user: 'delexample',
+          group: 'delexample',
+          admin_email: 'admin@del.example.com',
+          disabled: True
+        }
 
-disabled_vhost_sites: &disabled
-  - {
-      host: 'dev.example.com',
-      user: 'devexample',
-      group: 'devexample',
-      admin_email: 'admin@dev.example.com',
-      disabled: True
-    }
+    disabled_vhost_sites: &disabled
+      - {
+          host: 'dev.example.com',
+          user: 'devexample',
+          group: 'devexample',
+          admin_email: 'admin@dev.example.com',
+          disabled: True
+        }
 
-vhost_sites:
-  - *disabled
-  - {
-      host: 'example.com',
-      user: 'example',
-      group: 'example',
-      admin_email: 'admin@example.com',
-      ssl: {
-        enabled: False,
-        ssl_certificate: '/path/to/ssl/cert',
-        ssl_certificate_key: '/path/to/ssl/private_key'
-      },
-      aliases: [
-        www.example.com
-        au.example.com
-      ]
-    }
-```
+    vhost_sites:
+      - *disabled
+      - {
+          host: 'example.com',
+          user: 'example',
+          group: 'example',
+          admin_email: 'admin@example.com',
+          ssl: {
+            enabled: False,
+            ssl_certificate: '/path/to/ssl/cert',
+            ssl_certificate_key: '/path/to/ssl/private_key'
+          },
+          aliases: [
+            www.example.com
+            au.example.com
+          ]
+        }
 
 
 #### deleted_vhost_sites
