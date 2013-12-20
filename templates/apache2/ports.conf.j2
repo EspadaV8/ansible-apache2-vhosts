@@ -1,0 +1,12 @@
+Listen {{apache_host}}:{{apache_port}}
+NameVirtualHost {{apache_host}}:{{apache_port}}
+
+<IfModule mod_ssl.c>
+    Listen {{apache_host}}:{{apache_ssl_port}}
+    NameVirtualHost {{apache_host}}:{{apache_port}}
+</IfModule>
+
+<IfModule mod_gnutls.c>
+    Listen {{apache_host}}:{{apache_ssl_port}}
+    NameVirtualHost {{apache_host}}:{{apache_port}}
+</IfModule>

@@ -1,0 +1,32 @@
+<VirtualHost {{apache_host}}:{{apache_port}}>
+    ServerAdmin                           {{ item['admin_email'] }}
+    ServerName                            {{ item['host'] }}
+{% for alias in item['aliases']|default([]) %}
+    ServerAlias                           {{ alias }}
+{% endfor %}
+
+    DocumentRoot                 /srv/www/{{ item['host'] }}/public_html/
+    ErrorLog                     /srv/www/{{ item['host'] }}/logs/error.log
+    CustomLog                    /srv/www/{{ item['host'] }}/logs/access.log combined
+    php_admin_value error_log    /srv/www/{{ item['host'] }}/logs/php.error.log
+
+    <IfModule mpm_itk_module>
+        AssignUserId {{ item['user'] }} {{ item['group'] }}
+    </IfModule>
+
+    <IfModule mod_expires.c>
+        ExpiresActive On
+        ExpiresByType image/gif "access plus 1 months"
+        ExpiresByType image/jpg "access plus 1 months"
+        ExpiresByType image/jpeg "access plus 1 months"
+        ExpiresByType image/png "access plus 1 months"
+        ExpiresByType image/vnd.microsoft.icon "access plus 1 months"
+        ExpiresByType image/x-icon "access plus 1 months"
+        ExpiresByType image/ico "access plus 1 months"
+        ExpiresByType application/javascript "now plus 1 months"
+        ExpiresByType application/x-javascript "now plus 1 months"
+        ExpiresByType text/javascript "now plus 1 months"
+        ExpiresByType text/css "now plus 1 months"
+        ExpiresDefault "access plus 1 days"
+    </IfModule>
+</VirtualHost>

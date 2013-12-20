@@ -1,0 +1,39 @@
+---
+- name: Install Apache2 and modules
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  with_items: apache_packages
+  notify: Restart apache
+
+- name: Enable apache2 modules
+  file:
+    src: "/etc/apache2/mods-available/{{ item }}"
+    dest: "/etc/apache2/mods-enabled/{{ item }}"
+    state: link
+  with_items: apache_modules
+  notify: Restart apache
+
+- name: Disable default apache site
+  file:
+    path: "/etc/apache2/sites-enabled/000-default"
+    state: absent
+  notify: Restart apache
+
+- name: Disable default-ssl apache site
+  file:
+    path: "/etc/apache2/sites-enabled/000-default-ssl"
+    state: absent
+  notify: Restart apache
+
+- name: Configure Apache ports
+  template:
+    src: apache2/ports.conf.j2
+    dest: /etc/apache2/ports.conf
+  notify: Restart apache
+
+- name: Tighten Apache security
+  copy:
+    src: apache2/security
+    dest: /etc/apache2/conf.d/security
+  notify: Restart apache

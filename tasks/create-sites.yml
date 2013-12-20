@@ -1,0 +1,74 @@
+---
+- name: Create shared srv folder
+  file:
+    path: /srv/www/shared
+    state: directory
+
+- name: Create blocking robots.txt
+  copy:
+    src: robots.txt
+    dest: /srv/www/shared/robots.txt
+
+- name: Create home folders
+  user:
+    name: "{{ item['user'] }}"
+    state: present
+    createhome: yes
+    generate_ssh_key: yes
+    password: ''
+  with_items: vhost_sites
+
+- name: Add SSH public keys
+  authorized_key:
+    user: "{{ item['user'] }}"
+    key: "{{ lookup('file', '/tmp/combined_ssh.' + inventory_hostname) }}"
+  with_items: vhost_sites
+
+- name: Create public_html folders
+  file:
+    path: /srv/www/{{ item['host'] }}/public_html
+    state: directory
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+  with_items: vhost_sites
+
+- name: Create public_html symlinks
+  file:
+    src: /srv/www/{{ item['host'] }}/public_html
+    dest: /home/{{ item['user'] }}/public_html
+    state: link
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+  with_items: vhost_sites
+
+- name: Create log folders
+  file:
+    path: /srv/www/{{ item['host'] }}/logs
+    state: directory
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+  with_items: vhost_sites
+
+- name: Create logs symlinks
+  file:
+    src: /srv/www/{{ item['host'] }}/logs
+    dest: /home/{{ item['user'] }}/logs
+    state: link
+    owner: "{{ item['user'] }}"
+    group: "{{ item['group'] }}"
+  with_items: vhost_sites
+
+- name: Create apache2 vhosts
+  template:
+    src: apache2/vhost.conf.j2
+    dest: /etc/apache2/sites-available/{{ item['host'] }}.conf
+  with_items: vhost_sites
+
+- name: Enable apache2 vhosts
+  file:
+    src: /etc/apache2/sites-available/{{ item['host'] }}.conf
+    dest: /etc/apache2/sites-enabled/{{ item['host'] }}.conf
+    state: link
+  with_items: vhost_sites
+  notify: Restart apache
+  when: "item['disabled']|default(false) != True"

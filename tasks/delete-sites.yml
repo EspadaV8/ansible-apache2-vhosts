@@ -1,0 +1,27 @@
+---
+- name: Delete user
+  user:
+    name: "{{ item['user'] }}"
+    state: absent
+    remove: yes
+  with_items: deleted_vhost_sites
+
+- name: Delete public_html folders
+  file:
+    path: /srv/www/{{ item['host'] }}
+    state: absent
+  with_items: deleted_vhost_sites
+
+- name: Disable apache2 vhosts
+  file:
+    path: /etc/apache2/sites-enabled/{{ item['host'] }}.conf
+    state: absent
+  with_items: deleted_vhost_sites
+  notify: Restart apache
+
+- name: Delete apache2 vhosts
+  file:
+    path: /etc/apache2/sites-available/{{ item['host'] }}.conf
+    state: absent
+  with_items: deleted_vhost_sites
+  notify: Restart apache

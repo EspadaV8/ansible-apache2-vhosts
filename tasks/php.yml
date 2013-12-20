@@ -1,0 +1,15 @@
+---
+- name: Install PHP and Modules
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+  with_items: php_packages
+  notify: Restart apache
+
+- name: Set php.ini
+  template:
+    src: "php/{{ item }}.php.ini.j2"
+    dest: "/etc/php5/{{ item }}/php.ini"
+  with_items:
+    - apache2
+  notify: Restart apache
