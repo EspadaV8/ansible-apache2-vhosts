@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: Andrew Smith
+  description:
+  license: MIT
+  min_ansible_version: 1.2 (or higher)
+
+platforms:
+  - name: Debian
+    versions:
+      - squeeze
+      - wheezy
+
+categories:
+  - web
+dependencies:
+  # List your role dependencies here, one per line. Only
+  # dependencies available via galaxy should be listed here.
+
