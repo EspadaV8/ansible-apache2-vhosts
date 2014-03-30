@@ -5,10 +5,10 @@
     ServerAlias                           {{ alias }}
 {% endfor %}
 
-    DocumentRoot                 /srv/www/{{ item['host'] }}/public_html/
-    ErrorLog                     /srv/www/{{ item['host'] }}/logs/error.log
-    CustomLog                    /srv/www/{{ item['host'] }}/logs/access.log combined
-    php_admin_value error_log    /srv/www/{{ item['host'] }}/logs/php.error.log
+    DocumentRoot                 {{apache_www_folder}}/{{ item['host'] }}/public_html/
+    ErrorLog                     {{apache_www_folder}}/{{ item['host'] }}/logs/error.log
+    CustomLog                    {{apache_www_folder}}/{{ item['host'] }}/logs/access.log combined
+    php_admin_value error_log    {{apache_www_folder}}/{{ item['host'] }}/logs/php.error.log
 
     <IfModule mpm_itk_module>
         AssignUserId {{ item['user'] }} {{ item['group'] }}

@@ -1,13 +1,8 @@
 ---
 - name: Create shared srv folder
   file:
-    path: /srv/www/shared
+    path: '{{apache_www_folder}}/shared'
     state: directory
-
-- name: Create blocking robots.txt
-  copy:
-    src: robots.txt
-    dest: /srv/www/shared/robots.txt
 
 - name: Create home folders
   user:
@@ -17,16 +12,18 @@
     generate_ssh_key: yes
     password: ''
   with_items: vhost_sites
+  when: item.user != 'www-data'
 
 - name: Add SSH public keys
   authorized_key:
     user: "{{ item['user'] }}"
     key: "{{ lookup('file', '/tmp/combined_ssh.' + inventory_hostname) }}"
+  when: item.user != 'www-data'
   with_items: vhost_sites
 
 - name: Create public_html folders
   file:
-    path: /srv/www/{{ item['host'] }}/public_html
+    path: "{{apache_www_folder}}/{{ item.host }}/public_html"
     state: directory
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
@@ -34,16 +31,17 @@
 
 - name: Create public_html symlinks
   file:
-    src: /srv/www/{{ item['host'] }}/public_html
+    src: "{{apache_www_folder}}/{{ item['host'] }}/public_html"
     dest: /home/{{ item['user'] }}/public_html
     state: link
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
   with_items: vhost_sites
+  when: item.user != 'www-data'
 
 - name: Create log folders
   file:
-    path: /srv/www/{{ item['host'] }}/logs
+    path: "{{apache_www_folder}}/{{ item['host'] }}/logs"
     state: directory
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
@@ -51,12 +49,13 @@
 
 - name: Create logs symlinks
   file:
-    src: /srv/www/{{ item['host'] }}/logs
+    src: "{{apache_www_folder}}/{{ item['host'] }}/logs"
     dest: /home/{{ item['user'] }}/logs
     state: link
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
   with_items: vhost_sites
+  when: item.user != 'www-data'
 
 - name: Create apache2 vhosts
   template:
