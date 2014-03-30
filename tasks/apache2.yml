@@ -36,4 +36,16 @@
   copy:
     src: apache2/security
     dest: /etc/apache2/conf.d/security
+  when: ansible_distribution_release != 'saucy'
   notify: Restart apache
+
+- name: Tighten Apache security (Saucy)
+  copy:
+    src: apache2/security
+    dest: /etc/apache2/conf-available/security
+  when: ansible_distribution_release == 'saucy'
+  notify: Restart apache
+
+- name: activate security (Saucy)
+  file: src=/etc/apache2/conf-available/security dest=/etc/apache2/conf-enabled/security state=link
+  when: ansible_distribution_release == 'saucy'
