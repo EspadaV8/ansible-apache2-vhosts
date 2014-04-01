@@ -8,7 +8,7 @@
 
 - name: Delete public_html folders
   file:
-    path: /srv/www/{{ item['host'] }}
+    path: "{{apache_www_folder}}/{{ item['host'] }}"
     state: absent
   with_items: deleted_vhost_sites
 

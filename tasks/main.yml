@@ -2,13 +2,6 @@
 - include: apache2.yml
 - include: php.yml
 
-- name: Create combined SSH file
-  assemble:
-    src: roles/apache/files/ssh/keys
-    dest: /tmp/combined_ssh.{{inventory_hostname}}
-  delegate_to: 127.0.0.1
-  sudo: no
-
 - include: create-sites.yml
   when: vhost_sites is defined
 - include: disable-sites.yml
@@ -16,9 +9,3 @@
 - include: delete-sites.yml
   when: deleted_vhost_sites is defined
 
-- name: Delete combined SSH file
-  file:
-    path: /tmp/combined_ssh.{{inventory_hostname}}
-    state: absent
-  delegate_to: 127.0.0.1
-  sudo: no

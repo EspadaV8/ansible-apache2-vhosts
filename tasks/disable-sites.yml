@@ -1,11 +1,4 @@
 ---
-- name: Delete SSH public keys
-  authorized_key:
-    user: "{{ item['user'] }}"
-    key: "{{ lookup('file', '/tmp/combined_ssh.' + inventory_hostname) }}"
-    state: absent
-  with_items: disabled_vhost_sites
-
 - name: Disable apache2 vhosts
   file:
     path: /etc/apache2/sites-enabled/{{ item['host'] }}.conf

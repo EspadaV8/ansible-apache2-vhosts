@@ -43,6 +43,9 @@ apache_modules:
 apache_host: "127.0.0.1"
 apache_port: "80"
 apache_ssl_port: "443"
+create_combined_ssh: true
+
+apache_www_folder: /srv/www
 
 
 php_packages:
