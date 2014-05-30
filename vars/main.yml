@@ -64,6 +64,7 @@ php_timezone: "Australia/Brisbane"
 memory_limit: "32M"
 html_errors: "Off"
 
+vhost_base_path: "/srv/www"
 
 deleted_vhost_sites:
   - {
