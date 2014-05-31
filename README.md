@@ -148,6 +148,10 @@ ensure that the user account is present and that they can log in via SSH.
 public_html folders will be created and the config will be symlinked to
 sites-enabled so that apache will server their content.
 
+#### vhost_base_path
+
+This is a base path of your server. By default is '/srv/www', you can replace
+by '/var/www' for example.
 
 ### SSH settings
 
