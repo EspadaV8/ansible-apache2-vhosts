@@ -1,13 +1,13 @@
 ---
 - name: Create shared srv folder
   file:
-    path: {{ vhost_base_path }}/shared
+    path: "{{ vhost_base_path }}/shared"
     state: directory
 
 - name: Create blocking robots.txt
   copy:
     src: robots.txt
-    dest: {{ vhost_base_path }}/shared/robots.txt
+    dest: "{{ vhost_base_path }}/shared/robots.txt"
 
 - name: Create home folders
   user:
@@ -26,7 +26,7 @@
 
 - name: Create public_html folders
   file:
-    path: {{ vhost_base_path }}/{{ item['host'] }}/public_html
+    path: "{{ vhost_base_path }}/{{ item['host'] }}/public_html"
     state: directory
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
@@ -34,7 +34,7 @@
 
 - name: Create public_html symlinks
   file:
-    src: {{ vhost_base_path }}/{{ item['host'] }}/public_html
+    src: "{{ vhost_base_path }}/{{ item['host'] }}/public_html"
     dest: /home/{{ item['user'] }}/public_html
     state: link
     owner: "{{ item['user'] }}"
@@ -43,7 +43,7 @@
 
 - name: Create log folders
   file:
-    path: {{ vhost_base_path }}/{{ item['host'] }}/logs
+    path: "{{ vhost_base_path }}/{{ item['host'] }}/logs"
     state: directory
     owner: "{{ item['user'] }}"
     group: "{{ item['group'] }}"
@@ -51,7 +51,7 @@
 
 - name: Create logs symlinks
   file:
-    src: {{ vhost_base_path }}/{{ item['host'] }}/logs
+    src: "{{ vhost_base_path }}/{{ item['host'] }}/logs"
     dest: /home/{{ item['user'] }}/logs
     state: link
     owner: "{{ item['user'] }}"
